@@ -1,35 +1,49 @@
-package: project_manager
-version: '1.5.6'
-author: 'Friends Of REDAXO'
-supportpage: https://github.com/FriendsOfREDAXO/project_manager
+package: project_manager_plus
+version: '2.0.0-dev'
+author: 'Friends Of REDAXO, Alexander Walther'
+supportpage: https://github.com/alexplusde/project_manager_plus
 
-# Seiten
 page:
-    title: Projekt Manager
-    perm: project_manager[] 
+    title: Projekt Manager Plus
+    perm: admin
     icon: rex-icon fa-handshake-o
     
-    # Unterseiten
     subpages:
         main:
-            title: 'translate:project_manager_main'
-            perm: project_manager[]
+            title: 'translate:project_manager_plus_main'
+            perm: admin
             icon: rex-icon fa-info    
             itemclass: pull-right 
-       
-plugins:
-    - server
-    - client
-    - pagespeed   
-    - hosting
+        client:
+            title: 'translate:project_manager_plus_client'
+            perm: admin
+            icon: rex-icon fa-wrench
+        server_overview:
+            title: 'translate:project_manager_plus_server_overview'
+            perm: admin
+            icon: rex-icon fa-wrench
+        server_projects:
+            title: 'translate:project_manager_plus_server_project_detail'
+            perm: admin
+            icon: rex-icon fa-wrench
+        server_config:
+            title: 'translate:project_manager_plus_server_config'
+            perm: admin
+            icon: rex-icon fa-wrench
+        hosting:
+            title: translate:project_manager_plus_hosting_title
+        pagespeed_overview:
+            title: 'translate:project_manager_plus_pagespeed_title'
+        pagespeed_config:
+            title: 'translate:project_manager_plus_pagespeed_config'
 
-# Abhängigkeiten
-# Anforderungen ans System oder anderere AddOns, um dieses AddOn installieren oder update zu können
 requires:
-    redaxo: '^5.2' # benötigt mindestens REDAXO 5.2
+    packages:
+        cronjob: '>=2.3.0'
+        project_manager_plus: '^1.5.0'
+        yform: '>=3.4.2'
+    redaxo: '^5.15'
     php:
-        version: '>=7.0' # benötigt mindestens PHP 7
+        version: '>=8.0'
 
-# Plugins die automatisch installiert werden sollen
-#system_plugins:
-    #- client
+redaxo_versions:

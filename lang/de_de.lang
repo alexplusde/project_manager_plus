@@ -1,13 +1,165 @@
-project_manager_title = Projekt Manager
+# Project Manager Plus
 
-project_manager_main = Info
+project_manager_plus_title = Projekt Manager
 
-project_manager_navigation = Navigation
-project_manager_docs = Hilfe
-project_manager_config = Einstellungen
+project_manager_plus_main = Info
 
-project_manager_config_save = Speichern
-project_manager_config_saved = Gespeichert!
-save = Speichern
+project_manager_plus_navigation = Navigation
+project_manager_plus_docs = Hilfe
+project_manager_plus_config = Einstellungen
 
-perm_general_project_manager[] = project_manager[] - Rechte für Projekt Manager
+project_manager_plus_config_save = Speichern
+project_manager_plus_config_saved = Gespeichert!
+
+# Server 
+
+project_manager_plus_server_menu_entry = Projekte
+
+#view
+project_manager_plus_server_projects = Projekte
+project_manager_plus_server_overview = Übersicht
+project_manager_plus_server_config = Einstellungen
+project_manager_plus_server_domain = Domain
+project_manager_plus_server_api_key = API-Schlüssel
+project_manager_plus_server_cms = REDAXO Hauptversion
+project_manager_plus_server_update_content = Letzte Änderung
+
+project_manager_plus_server_updates_necessary = gefunden
+project_manager_plus_server_updates = Updates
+project_manager_plus_pm_client_version = Client
+project_manager_plus_server_php_version = PHP
+project_manager_plus_server_cms_version = Version
+project_manager_plus_server_syslog = Syslog
+project_manager_plus_server_is_ssl = SSL
+project_manager_plus_server_select_project = Projekt wählen
+project_manager_plus_server_syslog_code_1 = Keine Syslog Einträge
+project_manager_plus_server_syslog_code_2 = Syslog Einträge vorhanden
+project_manager_plus_server_status_code_0 = Falscher API-Schlüssel
+project_manager_plus_server_status_code_1 = Status Ok
+project_manager_plus_server_status_code_minus_1 = Abruf fehlerhaft
+project_manager_plus_server_maintenance_0 = Kein Wartungsvertrag
+project_manager_plus_server_maintenance_1 = Wartungsvertrag vorhanden
+project_manager_plus_server_maintenance_2 = Keine Info über Wartungsvertrag
+
+
+#add
+project_manager_plus_add_domain = Domain hinzufügen
+project_manager_plus_server_project_added = Projekt hinzugefügt
+project_manager_plus_server_no_name_defined = Bitte Projektnamen eingeben!
+project_manager_plus_server_name_already_defined = Projektname existiert bereits!
+project_manager_plus_server_no_domain_defined = Bitte Domain eingeben!
+project_manager_plus_server_domain_already_defined = Domain existiert bereits!
+
+#del
+project_manager_plus_server_project_deleted = Projekt gelöscht
+
+project_manager_plus_server_name = Projektname
+
+#edit
+project_manager_plus_server_edit_domain = Domain editieren
+project_manager_plus_server_name_info = Bitte Namen des Projekts eingeben!
+project_manager_plus_server_domain_info = Bitte Domain des Projekts eingeben!
+project_manager_plus_server_api_key_info = API-Schlüssel
+project_manager_plus_server_api_key_notice = Redaxo 5 API-Schlüssel, z.B. <code>83f15d69755585c3a825c3eccf2d654fc6578dadb7e05475</code>, bei Redaxo 4 Instanzen <code>legacy</code>
+project_manager_plus_server_param = Parameter
+project_manager_plus_server_param_notice = Optionale Paramenter, z.B. <code>param1=value1,param2=value2</code>
+project_manager_plus_server_ssl = SSL Verbindung
+project_manager_plus_server_tags = Tags
+project_manager_plus_server_maintenance = Wartungsvertrag?
+project_manager_plus_server_maintenance_short = WV 
+
+#detail
+project_manager_plus_server_project_detail = Details
+project_manager_plus_server_project_choose = Projekt wählen
+
+project_manager_plus_cronjob_favicon_name = Projekt Manager: Hole Favicon
+project_manager_plus_cronjob_data_name = Projekt Manager: Hole Domaindaten
+
+perm_general_project_manager_plus_server[] = project_manager_plus_server[] - Rechte für Projekt Manager Server Konfiguration
+
+
+#config
+project_manager_plus_server_title = Einstellungen
+project_manager_plus_server_min_headline = Mindestanforderungen
+project_manager_plus_server_php_min = PHP Version
+project_manager_plus_server_cms_4_min = Redaxo 4 Version
+project_manager_plus_server_cms_min = Redaxo 5 Version
+project_manager_plus_server_config_saved_successful = Einstellungen gespeichert!
+project_manager_plus_server_min_color = Farbe
+project_manager_plus_server_color_notice = Farbe bitte als HEX #F1F1F1 oder als RGBA angeben rgba(0,0,0,0.1)
+project_manager_plus_server_configuration = Einstellungen
+project_manager_plus_server_skip_addon = Addons ausschließen
+project_manager_plus_server_skip_addon_version = Versionen ausschließen
+project_manager_plus_server_skip_addon_notice = Addon wird bei der Prüfung nicht berücksichtigt. z.B. structure_tweaks, modulsammlung
+project_manager_plus_server_skip_addon_version_notice = Addonversion wird bei der Prüfung nicht berücksichtigt. z.B. beta, dev, rc
+
+
+#validate
+no_name_defined = Kein Projektname angegeben!
+no_domain_defined = Keine Domain angegeben!
+
+# Client
+
+
+client_navigation_title = Navigation [ main_navi.md ]
+client_content_title = Inhalt [ <span id="doc-file-name">{0}</span> ]
+
+client_noparser = Kein Markdown-Parser vorhanden! Bitte zuerst einen Parser installieren (Addon markitup oder textile)
+
+client_navinotfound = Navigations-Datei <strong>{0}</strong> wurde nicht gefunden!<br>Diese Datei ist zwingend erforderlich!
+client_filenotfound = Datei <strong>{0}</strong> wurde nicht gefunden. Inhalt existiert (noch) nicht. <br><br>Wir freuen uns über Mithilfe: <a href="{1}" target="_blank">{1}</a>
+
+project_manager_plus_client_menu_entry = Client
+project_manager_plus_client_page_entry = Einstellungen
+project_manager_plus_client_title = Einstellungen
+project_manager_plus_client_readme = Hilfe
+project_manager_plus_api_key_title = Client
+project_manager_plus_api_key_label = API-Schlüssel
+project_manager_plus_api_key_notice = API-Schlüssel aus Server Plugin eintragen, z.B.
+project_manager_plus_save = Speichern
+
+# Page Speed
+
+perm_general_project_manager_plus_client[] = project_manager_plus_client[] - Rechte für Projekt Manager Client
+
+project_manager_plus_pagespeed_menu_entry = PageSpeed
+
+project_manager_plus_pagespeed_projects = Projekte
+project_manager_plus_pagespeed_title = Übersicht
+project_manager_plus_pagespeed_config = Einstellungen
+project_manager_plus_pagespeed_api_key_title = Einstellungen
+project_manager_plus_pagespeed_api_key_label = PageSpeed API-Schlüssel
+project_manager_plus_pagespeed_api_key_notice = PageSpeed API-Schlüssel, z.B. <code>AIzaSyCp0Em_UPY78238es-9CZViEbq7CB_zcFBs</code>
+project_manager_plus_pagespeed_domain_norows_message = Kein Projekt vorhanden 
+project_manager_plus_cronjob_pagespeed_name = Projekt Manager: Hole Pagespeed Daten
+
+
+project_manager_plus_pagespeed_name = Projektname
+project_manager_plus_pagespeed_domain = Domain
+project_manager_plus_pagespeed_updatedate = Letzte Änderung
+project_manager_plus_pagespeed_logdate = Letzter Datenfetch
+project_manager_plus_pagespeed_domain_norows_message = Keine Einträge vorhanden
+
+perm_general_project_manager_plus_pagespeed[] = project_manager_plus_pagespeed[] - Rechte für Projekt Manager PageSpeed
+
+# Hosting
+
+project_manager_plus_hosting_menu_entry = Hosting
+
+project_manager_plus_hosting_projects = Projekte
+project_manager_plus_hosting_title = Übersicht
+project_manager_plus_hosting_domain_norows_message = Kein Projekt vorhanden 
+project_manager_plus_cronjob_hosting_name = Projekt Manager: Hole Hosting Daten
+
+project_manager_plus_hosting_name = Projektname
+project_manager_plus_hosting_domain = Domain
+project_manager_plus_hosting_createdate = Letzte Änderung
+project_manager_plus_hosting_ip = IPv4-Adresse
+project_manager_plus_hosting_is_ssl = SSL
+project_manager_plus_hosting_organisation = Organisation
+project_manager_plus_hosting_isp = ISP
+project_manager_plus_hosting_domain_norows_message = Keine Einträge vorhanden
+project_manager_plus_hosting_validTo = Zertifikat Enddatum
+project_manager_plus_hosting_validFrom = Zertifikat Startdatum
+
+perm_general_project_manager_plus_hosting[] = project_manager_plus_hosting[] - Rechte für Projekt Manager Hosting
