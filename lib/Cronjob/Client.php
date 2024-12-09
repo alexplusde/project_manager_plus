@@ -1,6 +1,14 @@
 <?php
 
-class rex_cronjob_project_manager_plus_data extends rex_cronjob
+namespace Alexplusde\PMP\Cronjob;
+
+use Alexplusde\PMP\Logger;
+use rex_sql;
+use rex_cronjob;
+use rex;
+use rex_i18n;
+
+class Client extends rex_cronjob
 {
 
     public function execute()
@@ -70,10 +78,10 @@ class rex_cronjob_project_manager_plus_data extends rex_cronjob
             $json = json_decode($resp, true);
             $json_result = json_encode($json);
                         
-            project_manager_plus_logger::deleteFile($domain);
-            project_manager_plus_logger::init($domain);
-            project_manager_plus_logger::log($domain . ' Abruf gestartet', 'Project Manager Server');
-            project_manager_plus_logger::log($json_result . ' -> Response', 'Project Manager Server');
+            Logger::deleteFile($domain);
+            Logger::init($domain);
+            Logger::log($domain . ' Abruf gestartet', 'Project Manager Server');
+            Logger::log($json_result . ' -> Response', 'Project Manager Server');
             
             $project_manager_plus_domain = rex_sql::factory()->setDebug(0)->getArray('SELECT * FROM ' . rex::getTable('project_manager_plus_domain') . ' WHERE domain = ? LIMIT 1', [$domain]); 
             
@@ -88,7 +96,7 @@ class rex_cronjob_project_manager_plus_data extends rex_cronjob
                 rex_sql::factory()->setDebug(0)->setQuery("UPDATE " . rex::getTable('project_manager_plus_domain') . " SET status = ?, updatedate = NOW() WHERE id = ?", [1, $project_manager_plus_domain[0]['id']]);
                 
                 //WRITE LOGFILE               
-                project_manager_plus_logger::log('Status 1', 'Project Manager Server');
+                Logger::log('Status 1', 'Project Manager Server');
                 
                 
               } else {
@@ -96,7 +104,7 @@ class rex_cronjob_project_manager_plus_data extends rex_cronjob
                 rex_sql::factory()->setDebug(0)->setQuery("UPDATE " . rex::getTable('project_manager_plus_domain') . " SET status = ?, updatedate = NOW()WHERE id = ?", [0, $project_manager_plus_domain[0]['id']]);
                 
                 // WRITE LOGFILE
-                project_manager_plus_logger::log('Status 0', 'Project Manager Server');
+                Logger::log('Status 0', 'Project Manager Server');
                 
               }
               
@@ -106,7 +114,7 @@ class rex_cronjob_project_manager_plus_data extends rex_cronjob
                rex_sql::factory()->setDebug(0)->setQuery("UPDATE " . rex::getTable('project_manager_plus_domain') . " SET status = ?, updatedate = NOW() WHERE id = ?", [-1, $project_manager_plus_domain[0]['id']]);
                
                //WRITE LOGFILE
-               project_manager_plus_logger::log('Status -1', 'Project Manager Server');
+               Logger::log('Status -1', 'Project Manager Server');
                
                
             }

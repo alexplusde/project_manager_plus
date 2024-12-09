@@ -1,6 +1,14 @@
 <?php
 
-class rex_cronjob_project_manager_plus_pagespeed extends rex_cronjob
+namespace Alexplusde\PMP\Cronjob;
+
+use rex_sql;
+use rex_cronjob;
+use rex;
+use rex_config;
+use rex_i18n;
+
+class PageSpeed extends rex_cronjob
 {
   
     public function execute() {

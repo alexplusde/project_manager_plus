@@ -1,6 +1,13 @@
 <?php
 
-class rex_cronjob_project_manager_plus_hosting extends rex_cronjob
+namespace Alexplusde\PMP\Cronjob;
+
+use rex_sql;
+use rex_cronjob;
+use rex;
+use rex_i18n;
+
+class Hosting extends rex_cronjob
 {
 
     public function execute()

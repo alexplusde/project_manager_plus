@@ -463,9 +463,9 @@ if($domain) {
       // LOGFILE      
       $icon = "";
       $output = '';
-      project_manager_plus_logger::init($domain);
+      Logger::init($domain);
   
-      $logfile = new rex_log_file(project_manager_plus_logger::getPath($domain));
+      $logfile = new rex_log_file(Logger::getPath($domain));
       $show_triangle = false;
       
       if (!is_null($logfile)) {

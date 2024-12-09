@@ -1,9 +1,16 @@
 <?php
 
+namespace Alexplusde\PMP\Api;
+
+use Alexplusde\PMP\Logger;
+use rex_sql;
+use rex_api_function;
+use rex;
+
 // Aufruf: 
 // /?rex-api-call=project_manager_plus&api_key=###
 
-class rex_api_project_manager_plus_server extends rex_api_function
+class Server extends rex_api_function
 {
     protected $published = true;
 
@@ -114,10 +121,10 @@ class rex_api_project_manager_plus_server extends rex_api_function
           $json = json_decode($resp, true);
           $json_result = json_encode($json);
           
-          project_manager_plus_logger::deleteFile($domain);
-          project_manager_plus_logger::init($domain);
-          project_manager_plus_logger::log($domain . ' Abruf gestartet', 'Project Manager Server');
-          project_manager_plus_logger::log($json_result . ' -> Response', 'Project Manager Server');
+          Logger::deleteFile($domain);
+          Logger::init($domain);
+          Logger::log($domain . ' Abruf gestartet', 'Project Manager Server');
+          Logger::log($json_result . ' -> Response', 'Project Manager Server');
                     
           $project_manager_plus_domain = rex_sql::factory()->setDebug(0)->getArray('SELECT * FROM ' . rex::getTable('project_manager_plus_domain') . ' WHERE domain = ? LIMIT 1', [$domain]);
           
@@ -130,14 +137,14 @@ class rex_api_project_manager_plus_server extends rex_api_function
               rex_sql::factory()->setDebug(0)->setQuery("UPDATE " . rex::getTable('project_manager_plus_domain') . " SET status = ?, updatedate = NOW() WHERE id = ?", [1, $project_manager_plus_domain[0]['id']]);
               
               //WRITE LOGFILE
-              project_manager_plus_logger::log('Status 1', 'Project Manager Server');
+              Logger::log('Status 1', 'Project Manager Server');
               
             } else {
               // SET STATUS
               rex_sql::factory()->setDebug(0)->setQuery("UPDATE " . rex::getTable('project_manager_plus_domain') . " SET status = ?, updatedate = NOW()WHERE id = ?", [0, $project_manager_plus_domain[0]['id']]);
               
               // WRITE LOGFILE
-              project_manager_plus_logger::log('Status 0', 'Project Manager Server');
+              Logger::log('Status 0', 'Project Manager Server');
             }
             
           } else {
@@ -145,7 +152,7 @@ class rex_api_project_manager_plus_server extends rex_api_function
             rex_sql::factory()->setDebug(0)->setQuery("UPDATE " . rex::getTable('project_manager_plus_domain') . " SET status = ?, updatedate = NOW() WHERE id = ?", [-1, $project_manager_plus_domain[0]['id']]);
             
             //WRITE LOGFILE
-            project_manager_plus_logger::log('Status -1', 'Project Manager Server');
+            Logger::log('Status -1', 'Project Manager Server');
           }
           rex_sql::factory()->setDebug(0)->setQuery("UPDATE " . rex::getTable('project_manager_plus_domain') . " SET updatedate = NOW() WHERE id = ?", [$project_manager_plus_domain[0]['id']]);       
           

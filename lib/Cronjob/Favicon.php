@@ -1,6 +1,14 @@
 <?php
 
-class rex_cronjob_project_manager_plus_favicon extends rex_cronjob
+namespace Alexplusde\PMP\Cronjob;
+
+use rex_sql;
+use rex_cronjob;
+use rex;
+use rex_path;
+use rex_i18n;
+
+class Favicon extends rex_cronjob
 {
 
     public function execute()
@@ -70,7 +78,7 @@ class rex_cronjob_project_manager_plus_favicon extends rex_cronjob
       // 1. CHECK THE DOM FOR THE <link> TAG
       // check if the url exists - if the header returned is not 404
       if($file_headers[0] != 'HTTP/1.1 404 Not Found') {
-        $dom = new DOMDocument();
+        $dom = new \DOMDocument();
         $dom->strictErrorChecking = FALSE;
         @$dom->loadHTMLfile($url);  //@ to discard all the warnings of malformed htmls
         if (!$dom) {

@@ -1,9 +1,28 @@
 <?php
 
+namespace Alexplusde\PMP\Api;
+
+use rex_sql;
+use rex_api_function;
+use rex;
+use rex_path;
+use rex_config;
+use rex_addon;
+use rex_response;
+use rex_logger;
+use rex_log_file;
+use rex_url;
+use rex_install_packages;
+use rex_install_webservice;
+use rex_yrewrite;
+use LimitIterator;
+use rex_article;
+use rex_functional_exception;
+
 // Aufruf: 
 // /?rex-api-call=project_manager_plus&api_key=###
 
-class rex_api_project_manager_plus extends rex_api_function
+class Manager extends rex_api_function
 {
     protected $published = true;
 
@@ -31,7 +50,7 @@ class rex_api_project_manager_plus extends rex_api_function
               # REDAXO / SERVER / ALLGEMEIN
   
               $params['pm_version']    		= rex_addon::get('project_manager_plus')->getProperty('version');
-              $params['client_version']   = rex_plugin::get('project_manager_plus', 'client')->getProperty('version');
+              $params['client_version']   = rex_addon::get('project_manager_plus')->getProperty('version');
               $params['rex_version']      = rex::getVersion();
               $params['cms']              = "REDAXO";
               $params['cms_version']      = rex::getVersion();

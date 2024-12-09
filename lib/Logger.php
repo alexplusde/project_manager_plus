@@ -1,6 +1,12 @@
 <?php
 
-class project_manager_plus_logger extends rex_log_file
+namespace Alexplusde\PMP;
+
+use rex_path;
+use rex_log_file;
+use rex_file;
+
+class Logger extends rex_log_file
 {
   public static $init = false;
   public static $logfile;
@@ -8,7 +14,7 @@ class project_manager_plus_logger extends rex_log_file
   
   public static function init($domain)
   {
-    self::$logfile = new rex_log_file(rex_path::log('project_manager_plus_'.$domain.'_last.log'), 100000);      
+    self::$logfile = new parent(rex_path::log('project_manager_plus_'.$domain.'_last.log'), 100000);      
   }
   
   public static function log($logstr, $logname = 'Projekt Manager')
