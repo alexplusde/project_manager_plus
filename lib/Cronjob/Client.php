@@ -45,9 +45,6 @@ class Client extends rex_cronjob
             if ($cms == 5)
               $url = $protocol.urlencode($domain)."/index.php?rex-api-call=project_manager_plus&api_key=".$website['api_key'].'&t='.$timestamp.$param;
             
-            if ($cms == 4)
-              $url = $protocol.urlencode($domain)."/project_manager_plus_client.php?rex-api-call=project_manager_plus&api_key=".$website['api_key'].'&t='.$timestamp.$param;
-
             $resps[$domain] = curl_init($url);
             curl_setopt_array($resps[$domain], $options);
             curl_multi_add_handle($multi_curl, $resps[$domain]);
