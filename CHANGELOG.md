@@ -23,9 +23,9 @@
 
 # Plugin: Server 1.5.0
 * Weitere Redaxo Versionen aufgenommen
-* Maintenance / Wartungsvertrag Icon angepasst #77 https://github.com/FriendsOfREDAXO/project_manager/issues/77
-* Beim Abruf der Domaindaten nun zusätzliches Logging in einzelnen Textdateien #78 https://github.com/FriendsOfREDAXO/project_manager/issues/78
-* Bugfix: Warnings entfernt unter R5.14.2 #79 https://github.com/FriendsOfREDAXO/project_manager/issues/79
+* Maintenance / Wartungsvertrag Icon angepasst #77 https://github.com/FriendsOfREDAXO/project_manager_plus/issues/77
+* Beim Abruf der Domaindaten nun zusätzliches Logging in einzelnen Textdateien #78 https://github.com/FriendsOfREDAXO/project_manager_plus/issues/78
+* Bugfix: Warnings entfernt unter R5.14.2 #79 https://github.com/FriendsOfREDAXO/project_manager_plus/issues/79
 
 
 ## Version 1.4.0 // 24.05.2022
@@ -298,22 +298,22 @@ Version Compare umgestellt
 ## Version 1.1.0 // 08.10.2018
 
 * Erweiterung um Rechtevergabe für das Addon und deren Plugins
- * project_manager[]
+ * project_manager_plus[]
   
 # Plugin: Server 1.0.5
 * Schreibweise der Funktionen verkürzt
 * Erweiterung um Rechtevergabe des Plugins
-* project_manager_server[]
-* Automatisches Anlegen der Crobjobs: rex_cronjob_project_manager_data, rex_cronjob_project_manager_favicon
+* project_manager_plus_server[]
+* Automatisches Anlegen der Crobjobs: rex_cronjob_project_manager_plus_data, rex_cronjob_project_manager_plus_favicon
 
 # Plugin: Client 1.0.4
 * Erweiterung um Rechtevergabe des Plugins
-* project_manager_client[]
+* project_manager_plus_client[]
 
 # Plugin: PageSpeed 1.0.3 
 * Erweiterung um Rechtevergabe des Plugins
-* project_manager_pagespeed[]  
-* Automatisches Anlegen des Crobjobs: rex_cronjob_project_manager_pagespeed
+* project_manager_plus_pagespeed[]  
+* Automatisches Anlegen des Crobjobs: rex_cronjob_project_manager_plus_pagespeed
   
 
 
