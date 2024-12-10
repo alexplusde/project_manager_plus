@@ -26,104 +26,104 @@ class Hosting extends rex_cronjob
         $message = '';
         $error = false;
    
-        foreach($websites as $website) {
+        foreach ($websites as $website) {
 
-          // because call limit ip-api.com
-          usleep(800000);     
-          $domain = $website['domain'];
-          $ip = gethostbyname(idn_to_ascii($domain, INTL_IDNA_VARIANT_UTS46));   
-          $url = 'http://ip-api.com/json/'.$ip;
+            // because call limit ip-api.com
+            usleep(800000);
+            $domain = $website['domain'];
+            $ip = gethostbyname(idn_to_ascii($domain, INTL_IDNA_VARIANT_UTS46));
+            $url = 'http://ip-api.com/json/'.$ip;
           
-          $ch = curl_init();
+            $ch = curl_init();
           
-          $options = array(
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_AUTOREFERER    => true,
-            CURLOPT_MAXREDIRS    => 4,
-            CURLOPT_HEADER         => false,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT => 10,
-            CURLOPT_USERAGENT      => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0',
-            CURLOPT_URL => $url
-          );
+            $options = array(
+              CURLOPT_FOLLOWLOCATION => true,
+              CURLOPT_AUTOREFERER    => true,
+              CURLOPT_MAXREDIRS    => 4,
+              CURLOPT_HEADER         => false,
+              CURLOPT_SSL_VERIFYPEER => false,
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_TIMEOUT => 10,
+              CURLOPT_USERAGENT      => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0',
+              CURLOPT_URL => $url
+            );
           
-          curl_setopt_array($ch, $options);
-          $resps[$domain .";hosting"] = curl_exec($ch);
+            curl_setopt_array($ch, $options);
+            $resps[$domain .";hosting"] = curl_exec($ch);
           
-          curl_close($ch);
+            curl_close($ch);
           
-          if($website['is_ssl']) {
-            $prefix = "https://";      
+            if ($website['is_ssl']) {
+                $prefix = "https://";
             
-            // SSL Certificate
-            set_error_handler(function(){return true;});
-            $orignal_parse = parse_url($prefix.$domain, PHP_URL_HOST);
-            $get = stream_context_create(array("ssl" => array("capture_peer_cert" => TRUE)));
-            $read = stream_socket_client("ssl://".$orignal_parse.":443", $errno, $errstr, 30, STREAM_CLIENT_CONNECT, $get);
-            $cert = stream_context_get_params($read);
-            restore_error_handler();
-            $certinfo = openssl_x509_parse($cert['options']['ssl']['peer_certificate']);
+                // SSL Certificate
+                set_error_handler(function () {return true;});
+                $orignal_parse = parse_url($prefix.$domain, PHP_URL_HOST);
+                $get = stream_context_create(array("ssl" => array("capture_peer_cert" => true)));
+                $read = stream_socket_client("ssl://".$orignal_parse.":443", $errno, $errstr, 30, STREAM_CLIENT_CONNECT, $get);
+                $cert = stream_context_get_params($read);
+                restore_error_handler();
+                $certinfo = openssl_x509_parse($cert['options']['ssl']['peer_certificate']);
             
-            $arr = json_decode($resps[$domain .";hosting"], TRUE);
-            $arr['validFrom'] = $certinfo['validFrom_time_t'];
-            $arr['validTo'] = $certinfo['validTo_time_t'];
-            $resps[$domain .";hosting"] = json_encode($arr);
+                $arr = json_decode($resps[$domain .";hosting"], true);
+                $arr['validFrom'] = $certinfo['validFrom_time_t'];
+                $arr['validTo'] = $certinfo['validTo_time_t'];
+                $resps[$domain .";hosting"] = json_encode($arr);
             
-          } else {
+            } else {
             
-            $arr = json_decode($resps[$domain .";hosting"], TRUE);
-            $arr['validFrom'] = "-";
-            $arr['validTo'] = "-";
-            $resps[$domain .";hosting"] = json_encode($arr);
+                $arr = json_decode($resps[$domain .";hosting"], true);
+                $arr['validFrom'] = "-";
+                $arr['validTo'] = "-";
+                $resps[$domain .";hosting"] = json_encode($arr);
             
-          }
+            }
 
         }
 
-         foreach ($resps as $key => $response) {
+        foreach ($resps as $key => $response) {
 
-           $domain = explode(";", $key)[0];
+            $domain = explode(";", $key)[0];
             $mode = explode(";", $key)[1];
                 
             $hosting = json_decode($response, true);
             $ip = '';
-            $ip = gethostbyname(idn_to_ascii($domain));   
+            $ip = gethostbyname(idn_to_ascii($domain));
 
-            if(json_last_error() === JSON_ERROR_NONE && (!array_key_exists("message", $hosting)))  {
-                if($mode == "hosting") {
+            if (json_last_error() === JSON_ERROR_NONE && (!array_key_exists("message", $hosting))) {
+                if ($mode == "hosting") {
                   
                     rex_sql::factory()->setDebug(0)->setQuery('INSERT INTO ' . rex::getTable('project_manager_plus_domain_hosting') . ' (`domain`, `raw`, `createdate`, `ip`, `status`) VALUES(:domain, :response, NOW(), :ip, 1) 
-                    ON DUPLICATE KEY UPDATE domain = :domain, `raw` = :response, createdate = NOW(), `ip` = :ip, `status` = 1', [":domain" => $domain, ":response" => $response, ":ip" => $ip] );
+                    ON DUPLICATE KEY UPDATE domain = :domain, `raw` = :response, createdate = NOW(), `ip` = :ip, `status` = 1', [":domain" => $domain, ":response" => $response, ":ip" => $ip]);
                     
-                } 
+                }
             } else {
               
-              // ERROR HANDLE
-              if($mode == "hosting") {
+                // ERROR HANDLE
+                if ($mode == "hosting") {
                 
-                rex_sql::factory()->setDebug(0)->setQuery('INSERT INTO ' . rex::getTable('project_manager_plus_domain_hosting') . ' (`domain`, `raw`, `createdate`, `ip`, `status`) VALUES(:domain, :response, NOW(), :ip, -1)
-                    ON DUPLICATE KEY UPDATE domain = :domain, `raw` = :response, createdate = NOW(), `ip` = :ip, `status` = -1', [":domain" => $domain, ":response" => $response,  ":ip" => $ip] );
+                    rex_sql::factory()->setDebug(0)->setQuery('INSERT INTO ' . rex::getTable('project_manager_plus_domain_hosting') . ' (`domain`, `raw`, `createdate`, `ip`, `status`) VALUES(:domain, :response, NOW(), :ip, -1)
+                    ON DUPLICATE KEY UPDATE domain = :domain, `raw` = :response, createdate = NOW(), `ip` = :ip, `status` = -1', [":domain" => $domain, ":response" => $response,  ":ip" => $ip]);
                 
-              } 
+                }
               
-              $message .= $domain.': '.$hosting['status'].' '.$hosting['message'].'\n';              
-              $error = true;
+                $message .= $domain.': '.$hosting['status'].' '.$hosting['message'].'\n';
+                $error = true;
 
             }
-          }
+        }
           
         
  
         
         if ($error === true) {
-          $this->setMessage($message);
-          return false;
+            $this->setMessage($message);
+            return false;
         } else {
-          return true;
+            return true;
         }
 
-       return true;
+        return true;
     }
     
     public function getTypeName()
@@ -136,4 +136,3 @@ class Hosting extends rex_cronjob
         return [];
     }
 }
-?>

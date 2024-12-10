@@ -7,7 +7,7 @@ use rex_sql;
 use rex_api_function;
 use rex;
 
-// Aufruf: 
+// Aufruf:
 // /?rex-api-call=project_manager_plus&api_key=###
 
 class Server extends rex_api_function
@@ -17,144 +17,144 @@ class Server extends rex_api_function
     public function execute()
     {
         ob_end_clean();
-        $func = rex_request('func','string');
-        $protocol = rex_request('protocol','string');
-        $domain = rex_request('domain','string');
-        $param = rex_request('param','string');        // &param param1=value1,param2=value2
+        $func = rex_request('func', 'string');
+        $protocol = rex_request('protocol', 'string');
+        $domain = rex_request('domain', 'string');
+        $param = rex_request('param', 'string');        // &param param1=value1,param2=value2
         $param = explode(',', $param);
         $param = '&'.implode('&', $param);
-        $api_key = rex_request('api_key','string');
+        $api_key = rex_request('api_key', 'string');
         $timestamp = time();
         
-        if($func == "delLog") {
+        if ($func == "delLog") {
 
-          // ?rex-api-call=project_manager_plus&api_key=634de6b36b4b4fde90e09c0a9588a7df&func=delLog&t=1549014945&_=1549014940721
+            // ?rex-api-call=project_manager_plus&api_key=634de6b36b4b4fde90e09c0a9588a7df&func=delLog&t=1549014945&_=1549014940721
           
-          $url = $protocol.urlencode($domain).'/index.php?rex-api-call=project_manager_plus&api_key='.$api_key.'&func='.$func.$param;          
-          $curl = curl_init();
-          curl_setopt_array($curl, array(
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_AUTOREFERER    => true,
-            CURLOPT_MAXREDIRS      => 5,
-            CURLOPT_HEADER         => false,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => false,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_USERAGENT      => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0',
-            CURLOPT_TIMEOUT => 5,
-            CURLOPT_URL => $url
-          ));
-          $resp = curl_exec($curl);
+            $url = $protocol.urlencode($domain).'/index.php?rex-api-call=project_manager_plus&api_key='.$api_key.'&func='.$func.$param;
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+              CURLOPT_FOLLOWLOCATION => true,
+              CURLOPT_AUTOREFERER    => true,
+              CURLOPT_MAXREDIRS      => 5,
+              CURLOPT_HEADER         => false,
+              CURLOPT_SSL_VERIFYPEER => false,
+              CURLOPT_SSL_VERIFYHOST => false,
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_USERAGENT      => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0',
+              CURLOPT_TIMEOUT => 5,
+              CURLOPT_URL => $url
+            ));
+            $resp = curl_exec($curl);
          
-          $json = json_decode($resp, true);
+            $json = json_decode($resp, true);
             
-          if(json_last_error() === JSON_ERROR_NONE && $json !== null) {
-            if ($json['delLog'] == 1) {
-              $params['delLog'] = 1;
-            }
-          } else {
-            $params['delLog'] = -1;
-          }
-          
-          // reload data          
-          $url = $protocol.urlencode($domain)."/index.php?rex-api-call=project_manager_plus&api_key=".$api_key.'&t='.$timestamp.$param;
-          $curl = curl_init();
-          curl_setopt_array($curl, array(
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_AUTOREFERER    => true,
-            CURLOPT_MAXREDIRS      => 5,
-            CURLOPT_HEADER         => false,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => false,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_USERAGENT      => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0',
-            CURLOPT_TIMEOUT => 5,
-            CURLOPT_URL => $url
-          ));          
-
-          $response = curl_exec($curl);
-          $resp = $response;
-          $json = json_decode($resp, true);
-          
-          $project_manager_plus_domain = rex_sql::factory()->setDebug(0)->getArray('SELECT * FROM ' . rex::getTable('project_manager_plus_domain') . ' WHERE domain = ? LIMIT 1', [$domain]);
-          
-          if(json_last_error() === JSON_ERROR_NONE && $json !== null) {
-            
-            if ($json['status'] == 1) {
-              
-              rex_sql::factory()->setDebug(0)->setQuery('INSERT INTO ' . rex::getTable('project_manager_plus_logs') . ' (`domain_id`, `createdate`, `raw`) VALUES(?,NOW(),?)', [$project_manager_plus_domain[0]['id'],  $resp] );
-              // SET STATUS
-              rex_sql::factory()->setDebug(0)->setQuery("UPDATE " . rex::getTable('project_manager_plus_domain') . " SET status = ?, updatedate = NOW() WHERE id = ?", [1, $project_manager_plus_domain[0]['id']]);
-              
+            if (json_last_error() === JSON_ERROR_NONE && $json !== null) {
+                if ($json['delLog'] == 1) {
+                    $params['delLog'] = 1;
+                }
             } else {
-              // SET STATUS
-              rex_sql::factory()->setDebug(0)->setQuery("UPDATE " . rex::getTable('project_manager_plus_domain') . " SET status = ?, updatedate = NOW()WHERE id = ?", [0, $project_manager_plus_domain[0]['id']]);
+                $params['delLog'] = -1;
             }
+          
+            // reload data
+            $url = $protocol.urlencode($domain)."/index.php?rex-api-call=project_manager_plus&api_key=".$api_key.'&t='.$timestamp.$param;
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+              CURLOPT_FOLLOWLOCATION => true,
+              CURLOPT_AUTOREFERER    => true,
+              CURLOPT_MAXREDIRS      => 5,
+              CURLOPT_HEADER         => false,
+              CURLOPT_SSL_VERIFYPEER => false,
+              CURLOPT_SSL_VERIFYHOST => false,
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_USERAGENT      => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0',
+              CURLOPT_TIMEOUT => 5,
+              CURLOPT_URL => $url
+            ));
+
+            $response = curl_exec($curl);
+            $resp = $response;
+            $json = json_decode($resp, true);
+          
+            $project_manager_plus_domain = rex_sql::factory()->setDebug(0)->getArray('SELECT * FROM ' . rex::getTable('project_manager_plus_domain') . ' WHERE domain = ? LIMIT 1', [$domain]);
+          
+            if (json_last_error() === JSON_ERROR_NONE && $json !== null) {
             
-          } else {
-            // SET STATUS
-            rex_sql::factory()->setDebug(0)->setQuery("UPDATE " . rex::getTable('project_manager_plus_domain') . " SET status = ?, updatedate = NOW() WHERE id = ?", [-1, $project_manager_plus_domain[0]['id']]);
-          }          
-          rex_sql::factory()->setDebug(0)->setQuery("UPDATE " . rex::getTable('project_manager_plus_domain') . " SET updatedate = NOW() WHERE id = ?", [$project_manager_plus_domain[0]['id']]);            
+                if ($json['status'] == 1) {
+              
+                    rex_sql::factory()->setDebug(0)->setQuery('INSERT INTO ' . rex::getTable('project_manager_plus_logs') . ' (`domain_id`, `createdate`, `raw`) VALUES(?,NOW(),?)', [$project_manager_plus_domain[0]['id'],  $resp]);
+                    // SET STATUS
+                    rex_sql::factory()->setDebug(0)->setQuery("UPDATE " . rex::getTable('project_manager_plus_domain') . " SET status = ?, updatedate = NOW() WHERE id = ?", [1, $project_manager_plus_domain[0]['id']]);
+              
+                } else {
+                    // SET STATUS
+                    rex_sql::factory()->setDebug(0)->setQuery("UPDATE " . rex::getTable('project_manager_plus_domain') . " SET status = ?, updatedate = NOW()WHERE id = ?", [0, $project_manager_plus_domain[0]['id']]);
+                }
+            
+            } else {
+                // SET STATUS
+                rex_sql::factory()->setDebug(0)->setQuery("UPDATE " . rex::getTable('project_manager_plus_domain') . " SET status = ?, updatedate = NOW() WHERE id = ?", [-1, $project_manager_plus_domain[0]['id']]);
+            }
+            rex_sql::factory()->setDebug(0)->setQuery("UPDATE " . rex::getTable('project_manager_plus_domain') . " SET updatedate = NOW() WHERE id = ?", [$project_manager_plus_domain[0]['id']]);
           
         }
         
-        if($func == "updateData") {
+        if ($func == "updateData") {
           
-          // reload data
-          $url = $protocol.urlencode($domain)."/index.php?rex-api-call=project_manager_plus&api_key=".$api_key.'&t='.$timestamp.$param;
-          $curl = curl_init();
-          curl_setopt_array($curl, array(
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_AUTOREFERER    => true,
-            CURLOPT_MAXREDIRS      => 5,
-            CURLOPT_HEADER         => false,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => false,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT => 5,
-            CURLOPT_URL => $url
-          ));
+            // reload data
+            $url = $protocol.urlencode($domain)."/index.php?rex-api-call=project_manager_plus&api_key=".$api_key.'&t='.$timestamp.$param;
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+              CURLOPT_FOLLOWLOCATION => true,
+              CURLOPT_AUTOREFERER    => true,
+              CURLOPT_MAXREDIRS      => 5,
+              CURLOPT_HEADER         => false,
+              CURLOPT_SSL_VERIFYPEER => false,
+              CURLOPT_SSL_VERIFYHOST => false,
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_TIMEOUT => 5,
+              CURLOPT_URL => $url
+            ));
           
-          $response = curl_exec($curl);
-          $resp = $response;
-          $json = json_decode($resp, true);
-          $json_result = json_encode($json);
+            $response = curl_exec($curl);
+            $resp = $response;
+            $json = json_decode($resp, true);
+            $json_result = json_encode($json);
           
-          Logger::deleteFile($domain);
-          Logger::init($domain);
-          Logger::log($domain . ' Abruf gestartet', 'Project Manager Server');
-          Logger::log($json_result . ' -> Response', 'Project Manager Server');
+            Logger::deleteFile($domain);
+            Logger::init($domain);
+            Logger::log($domain . ' Abruf gestartet', 'Project Manager Server');
+            Logger::log($json_result . ' -> Response', 'Project Manager Server');
                     
-          $project_manager_plus_domain = rex_sql::factory()->setDebug(0)->getArray('SELECT * FROM ' . rex::getTable('project_manager_plus_domain') . ' WHERE domain = ? LIMIT 1', [$domain]);
+            $project_manager_plus_domain = rex_sql::factory()->setDebug(0)->getArray('SELECT * FROM ' . rex::getTable('project_manager_plus_domain') . ' WHERE domain = ? LIMIT 1', [$domain]);
           
-          if(json_last_error() === JSON_ERROR_NONE && $json !== null) {
+            if (json_last_error() === JSON_ERROR_NONE && $json !== null) {
             
-            if ($json['status'] == 1) {
+                if ($json['status'] == 1) {
               
-              rex_sql::factory()->setDebug(0)->setQuery('INSERT INTO ' . rex::getTable('project_manager_plus_logs') . ' (`domain_id`, `createdate`, `raw`) VALUES(?,NOW(),?)', [$project_manager_plus_domain[0]['id'],  $resp] );
-              // SET STATUS
-              rex_sql::factory()->setDebug(0)->setQuery("UPDATE " . rex::getTable('project_manager_plus_domain') . " SET status = ?, updatedate = NOW() WHERE id = ?", [1, $project_manager_plus_domain[0]['id']]);
+                    rex_sql::factory()->setDebug(0)->setQuery('INSERT INTO ' . rex::getTable('project_manager_plus_logs') . ' (`domain_id`, `createdate`, `raw`) VALUES(?,NOW(),?)', [$project_manager_plus_domain[0]['id'],  $resp]);
+                    // SET STATUS
+                    rex_sql::factory()->setDebug(0)->setQuery("UPDATE " . rex::getTable('project_manager_plus_domain') . " SET status = ?, updatedate = NOW() WHERE id = ?", [1, $project_manager_plus_domain[0]['id']]);
               
-              //WRITE LOGFILE
-              Logger::log('Status 1', 'Project Manager Server');
+                    //WRITE LOGFILE
+                    Logger::log('Status 1', 'Project Manager Server');
               
+                } else {
+                    // SET STATUS
+                    rex_sql::factory()->setDebug(0)->setQuery("UPDATE " . rex::getTable('project_manager_plus_domain') . " SET status = ?, updatedate = NOW()WHERE id = ?", [0, $project_manager_plus_domain[0]['id']]);
+              
+                    // WRITE LOGFILE
+                    Logger::log('Status 0', 'Project Manager Server');
+                }
+            
             } else {
-              // SET STATUS
-              rex_sql::factory()->setDebug(0)->setQuery("UPDATE " . rex::getTable('project_manager_plus_domain') . " SET status = ?, updatedate = NOW()WHERE id = ?", [0, $project_manager_plus_domain[0]['id']]);
-              
-              // WRITE LOGFILE
-              Logger::log('Status 0', 'Project Manager Server');
+                // SET STATUS
+                rex_sql::factory()->setDebug(0)->setQuery("UPDATE " . rex::getTable('project_manager_plus_domain') . " SET status = ?, updatedate = NOW() WHERE id = ?", [-1, $project_manager_plus_domain[0]['id']]);
+            
+                //WRITE LOGFILE
+                Logger::log('Status -1', 'Project Manager Server');
             }
-            
-          } else {
-            // SET STATUS
-            rex_sql::factory()->setDebug(0)->setQuery("UPDATE " . rex::getTable('project_manager_plus_domain') . " SET status = ?, updatedate = NOW() WHERE id = ?", [-1, $project_manager_plus_domain[0]['id']]);
-            
-            //WRITE LOGFILE
-            Logger::log('Status -1', 'Project Manager Server');
-          }
-          rex_sql::factory()->setDebug(0)->setQuery("UPDATE " . rex::getTable('project_manager_plus_domain') . " SET updatedate = NOW() WHERE id = ?", [$project_manager_plus_domain[0]['id']]);       
+            rex_sql::factory()->setDebug(0)->setQuery("UPDATE " . rex::getTable('project_manager_plus_domain') . " SET updatedate = NOW() WHERE id = ?", [$project_manager_plus_domain[0]['id']]);
           
         }
         
@@ -165,5 +165,3 @@ class Server extends rex_api_function
         
     }
 }
-
-?>

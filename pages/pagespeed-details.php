@@ -1,24 +1,24 @@
-<?php 
+<?php
 
 $domain = rex_request('domain', 'string', "");
 
 
-if($domain) {
+if ($domain) {
   
-  // Domain-Übersicht ANFANG //
+    // Domain-Übersicht ANFANG //
   
-  $query = 'SELECT * FROM `rex_project_manager_plus_logs` AS L
+    $query = 'SELECT * FROM `rex_project_manager_plus_logs` AS L
               INNER JOIN `rex_project_manager_plus_domain` as D
               ON D.id = L.domain_id
               WHERE domain = ? ORDER BY L.id DESC LIMIT 1';
-  $item = rex_sql::factory()->setDebug(0)->getArray($query, [$domain])[0];
+    $item = rex_sql::factory()->setDebug(0)->getArray($query, [$domain])[0];
     
-  $raw = json_decode($item['raw'], true);
+    $raw = json_decode($item['raw'], true);
   
-  if(is_array($raw)) {
+    if (is_array($raw)) {
     
-    // PSI
-    $query = '
+        // PSI
+        $query = '
         SELECT * FROM (SELECT * FROM  ' . rex::getTable('project_manager_plus_domain') . ' ORDER BY domain) AS D
                     LEFT JOIN (
                                 SELECT domain, raw, score_desktop AS psi_score_desktop
@@ -35,39 +35,39 @@ if($domain) {
                     ORDER BY D.domain
     ';
 
-    $item = rex_sql::factory()->setDebug(0)->getArray($query, [$domain])[0];
+        $item = rex_sql::factory()->setDebug(0)->getArray($query, [$domain])[0];
     
-    // Screenshot
-    $raw= json_decode($item['raw'], true);
-    $image = '';
-    $data = '';
-    if (isset($raw['lighthouseResult'])) {
-      $data = $raw['lighthouseResult']['audits']['final-screenshot']['details']['data'];
-      $image = $data;
-    }
+        // Screenshot
+        $raw= json_decode($item['raw'], true);
+        $image = '';
+        $data = '';
+        if (isset($raw['lighthouseResult'])) {
+            $data = $raw['lighthouseResult']['audits']['final-screenshot']['details']['data'];
+            $image = $data;
+        }
         
-    if($item['psi_score_desktop'] < 0.7) {
-      $class = '<span class="rex-icon fa-desktop text-danger"></span> ';
-    } else if($item['psi_score_desktop'] < 0.9) {
-      $class = '<span class="rex-icon fa-desktop text-warning"></span> ';
-    } else {
-      $class = '<span class="rex-icon fa-desktop text-success"></span> ';
-    }
+        if ($item['psi_score_desktop'] < 0.7) {
+            $class = '<span class="rex-icon fa-desktop text-danger"></span> ';
+        } elseif ($item['psi_score_desktop'] < 0.9) {
+            $class = '<span class="rex-icon fa-desktop text-warning"></span> ';
+        } else {
+            $class = '<span class="rex-icon fa-desktop text-success"></span> ';
+        }
     
-    if($item['psi_score_mobile'] < 0.7) {
-      $classmobile = '<span class="rex-icon fa-mobile text-danger"></span> ';
-    } else if($item['psi_score_mobile'] < 0.9) {
-      $classmobile = '<span class="rex-icon fa-mobile text-warning"></span> ';
-    } else {
-      $classmobile = '<span class="rex-icon fa-mobile text-success"></span> ';
-    }
+        if ($item['psi_score_mobile'] < 0.7) {
+            $classmobile = '<span class="rex-icon fa-mobile text-danger"></span> ';
+        } elseif ($item['psi_score_mobile'] < 0.9) {
+            $classmobile = '<span class="rex-icon fa-mobile text-warning"></span> ';
+        } else {
+            $classmobile = '<span class="rex-icon fa-mobile text-success"></span> ';
+        }
     
-    $output = '';    
-    $output = '<table class="table table-striped"><thead><tr><th>Name</th><th>Result</th><th>Screenshot</th></tr></thead><tbody>';
-    $output .= '<tr><td>Page Speed</td><td>'.$class.$item['psi_score_desktop'].' | '.$classmobile.$item['psi_score_mobile'].'</td><td style="width: 320px"><img src="'.$image.'" alt="" title=""/></td></tr>';
-    $output .= '</tbody></table>';
+        $output = '';
+        $output = '<table class="table table-striped"><thead><tr><th>Name</th><th>Result</th><th>Screenshot</th></tr></thead><tbody>';
+        $output .= '<tr><td>Page Speed</td><td>'.$class.$item['psi_score_desktop'].' | '.$classmobile.$item['psi_score_mobile'].'</td><td style="width: 320px"><img src="'.$image.'" alt="" title=""/></td></tr>';
+        $output .= '</tbody></table>';
 
-    return $output;
+        return $output;
     
-  }
+    }
 }
